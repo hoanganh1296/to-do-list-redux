@@ -3,37 +3,23 @@ import "./App.css";
 import TaskForm from "./components/TaskForm";
 import Control from "./components/Control";
 import TaskList from "./components/TaskList";
-
+// import { findIndex, filter } from "lodash";
+import { connect } from "react-redux";
+import * as actions from "./actions/index";
 class App extends Component {
-  constructor(props){
-    super(props);
-    this.state ={ 
-      tasks: [] // id: unique, name, status
-    }
-  }
-  onGenerateData = () =>{
-    var tasks = [
-      {
-        id : ,
-        name: 'Học lập trình',
-        status: true
-      },
-      {
-        id : ,
-        name: 'Đi bơi',
-        status: true
-      },
-      {
-        id : ,
-        name: 'Chơi game',
-        status: false
-      }
-    ]
-  }
-
-
+  onOpenForm = () => {
+    this.props.onOpenForm();
+    this.props.onClearTask({
+      id: "",
+      name: "",
+      status: false,
+    });
+  };
 
   render() {
+    var { isDisplayForm } = this.props;
+
+
     return (
       <div className="container">
         <div className="text-center">
@@ -41,28 +27,36 @@ class App extends Component {
           <hr />
         </div>
         <div className="row">
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-             {/* FORM */}
-             <TaskForm/>
-           </div>
+          <div
+            className={
+              isDisplayForm ? "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ""
+            }
+          >
+            {/* FORM */}
+            <TaskForm />
+          </div>
           {/* TODO List */}
-          <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <button type="button" className="btn btn-primary">
+          <div
+            className={
+              isDisplayForm
+                ? "col-xs-8 col-sm-8 col-md-8 col-lg-8"
+                : "col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            }
+          >
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.onOpenForm}
+            >
               <span className="fa fa-plus mr-5"></span> Thêm Công Việc
             </button>
-            <button 
-                type="button" 
-                className="btn btn-danger ml-5"
-                onClick={this.onGenerateData}    >
-              <span className="fa fa-plus mr-5"></span> Generate Data
-            </button>
-            {/* SEARCH AND SORT */}   
-            <Control/>
+            {/* SEARCH AND SORT */}
+            <Control />
             {/* show TODO list   */}
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-               <TaskList/>
-               </div>
+                <TaskList />
+              </div>
             </div>
           </div>
         </div>
@@ -71,4 +65,21 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isDisplayForm: state.isDisplayForm,
+  };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    onOpenForm: () => {
+      dispatch(actions.openForm());
+    },
+    onClearTask: (task) => {
+      dispatch(actions.editTask(task));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

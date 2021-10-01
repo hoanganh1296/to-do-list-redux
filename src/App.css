@@ -34,6 +34,30 @@
 .ml-5{
   margin-left: 5px;
 }
+
+
+.panel-title .close-form{
+  /* display: flex; */
+  font-size: 20px;
+}
+
+.panel-title .close-form:hover{
+  color: red;
+}
+
+.sort-selected::after{
+  content: '\f00c';
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  margin: 0px 0px 0px 5px;
+  display: inline-block;
+}
+
+.text-center .label{
+  cursor: pointer;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
